@@ -1,5 +1,6 @@
 import '@styles/tailwind.css';
 import { Inter } from 'next/font/google';
+import MainLayout from '@layout/MainLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,5 +14,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
+    // <html lang="en">
+    //   <body className={inter.className}>
+    //     <MainLayout>{children}</MainLayout>
+    //   </body>
+    // </html>
   );
 }
