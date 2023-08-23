@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import endPoints from '@services/api';
 
 const AuthContext = createContext();
@@ -25,8 +25,19 @@ function useProviderAuth() {
         'Content-Type': 'application/json',
       },
     };
-    const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
-    console.log(access_token);
+    const { data: data } = await axios.post(endPoints.auth.login, { email, password }, options);
+    // .catch((test) => {
+    //   console.log('test');
+    //   console.log(test);
+    //   return 'error';
+    // });
+    if (data) {
+      const token = data.access_token;
+      Cookie.set('token', token, { expires: 5 });
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+      const { data: user } = await axios.get(endPoints.auth.profile);
+      setUser(user);
+    }
   };
 
   return {
