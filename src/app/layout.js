@@ -1,6 +1,6 @@
 import '@styles/tailwind.css';
 import { Inter } from 'next/font/google';
-import MainLayout from '@layout/MainLayout';
+import { ProviderAuth } from '@hooks/useAuth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,9 +11,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <>
+      <ProviderAuth>
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      </ProviderAuth>
+    </>
     // <html lang="en">
     //   <body className={inter.className}>
     //     <MainLayout>{children}</MainLayout>
