@@ -27,7 +27,7 @@ export default function Header() {
   const userData = {
     name: auth?.user.name,
     email: auth?.user.email,
-    imageUrl: `https://ui-avatars.com/api/?name=${auth?.user.name}+${auth?.user.email}`,
+    imageUrl: auth?.user.avatar, //`https://ui-avatars.com/api/?name=${auth?.user.name}+${auth?.user.email}`,
   };
 
   return (
