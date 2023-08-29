@@ -1,15 +1,42 @@
 'use client';
+import { Chart } from '@common/Chart';
 import useFecth from '@hooks/useFetch';
 import endPoints from '@services/api';
 
-const PRODUCT_LIMIT = 15;
+const PRODUCT_LIMIT = 60;
 const PRODUCT_OFFSET = 0;
 
 export default function Dashboard() {
   const products = useFecth(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
   console.log(products);
+
+  const categories = products?.map((product) => {
+    return product?.category;
+  });
+  const categoryName = categories?.map((category) => {
+    return category?.name;
+  });
+
+  console.log(categories);
+  console.log(categoryName);
+
+  const countOccurrence = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
+  console.log(countOccurrence(categoryName));
+
+  const data = {
+    datasets: [
+      {
+        label: 'Categories',
+        data: countOccurrence(categoryName),
+        borderWidth: 2,
+        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', '#f3ba2f', '#2a71d0'],
+      },
+    ],
+  };
+
   return (
     <>
+      <Chart className="mb-8 mt-2" chartData={data} />
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
