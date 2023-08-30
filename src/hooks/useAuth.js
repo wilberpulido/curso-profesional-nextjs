@@ -25,6 +25,7 @@ function useProviderAuth() {
         'Content-Type': 'application/json',
       },
     };
+    console.log(Cookie.get('token'))
     const { data: data } = await axios.post(endPoints.auth.login, { email, password }, options);
     // .catch((test) => {
     //   console.log('test');
