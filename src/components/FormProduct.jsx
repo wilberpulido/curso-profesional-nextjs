@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { addProduct } from '@services/api/products';
 
 export default function FormProduct() {
   const formRef = useRef(null);
@@ -11,9 +12,13 @@ export default function FormProduct() {
       price: parseInt(formData.get('price')),
       description: formData.get('description'),
       categoryId: parseInt(formData.get('category')),
-      images: [formData.get('images').name],
+      //images: [formData.get('images').name],
+      images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
     };
     console.log(data);
+    addProduct(data).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -65,7 +70,9 @@ export default function FormProduct() {
             </div>
             <div className="col-span-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Cover photo</label>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700">
+                  Cover photo
+                </label>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
