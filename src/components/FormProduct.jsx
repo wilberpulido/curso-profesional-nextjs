@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { addProduct } from '@services/api/products';
 
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const formRef = useRef(null);
 
   const handleSubmit = (event) => {
@@ -13,12 +13,28 @@ export default function FormProduct() {
       description: formData.get('description'),
       categoryId: parseInt(formData.get('category')),
       //images: [formData.get('images').name],
-      images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
+      //images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
     };
     console.log(data);
-    addProduct(data).then((response) => {
-      console.log(response);
-    });
+    addProduct(data)
+      .then(() => {
+        setAlert({
+          active: true,
+          message: 'Product added successfully',
+          type: 'success',
+          autoClose: false,
+        });
+        setOpen(false);
+      })
+      .catch((error) => {
+        setAlert({
+          active: true,
+          message: error.message,
+          type: 'error',
+          autoClose: false,
+        });
+        setOpen(false);
+      });
   };
 
   return (
