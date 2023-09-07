@@ -1,8 +1,33 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { addProduct } from '@services/api/products';
 
-export default function FormProduct({ setOpen, setAlert }) {
+export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
+
+  const options = [
+    { id: 1, label: 'Clothes' },
+    { id: 2, label: 'Electronics' },
+    { id: 3, label: 'Furniture' },
+    { id: 4, label: 'Toys' },
+    { id: 5, label: 'Others' },
+  ];
+
+  const optionElements = options.map((option) => (
+    <option key={option.id} value={option.id}>
+      {option.label}
+    </option>
+  ));
+  const [selectedOption, setSelectedOption] = useState(product?.category?.id);
+
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+  // <option value="1">Clothes</option>
+  // <option value="2">Electronics</option>
+  // <option value="3">Furniture</option>
+  // <option value="4">Toys</option>
+  // <option value="5">Others</option>
+  console.log(product);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -15,7 +40,6 @@ export default function FormProduct({ setOpen, setAlert }) {
       //images: [formData.get('images').name],
       //images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
     };
-    console.log(data);
     addProduct(data)
       .then(() => {
         setAlert({
@@ -46,29 +70,40 @@ export default function FormProduct({ setOpen, setAlert }) {
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                 Title
               </label>
-              <input type="text" name="title" id="title" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input
+                type="text"
+                name="title"
+                id="title"
+                defaultValue={product?.title}
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="price" className="block text-sm font-medium text-gray-700">
                 Price
               </label>
-              <input type="number" name="price" id="price" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+              <input
+                type="number"
+                name="price"
+                id="price"
+                defaultValue={product?.price}
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
             </div>
             <div className="col-span-6">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Category
               </label>
+              {/* TODO: check default value for this select */}
               <select
                 id="category"
                 name="category"
                 autoComplete="category-name"
+                defaultValue={selectedOption}
+                onChange={handleChange}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
-                <option value="1">Clothes</option>
-                <option value="2">Electronics</option>
-                <option value="3">Furniture</option>
-                <option value="4">Toys</option>
-                <option value="5">Others</option>
+                {optionElements}
               </select>
             </div>
 
@@ -81,6 +116,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 id="description"
                 autoComplete="description"
                 rows="3"
+                defaultValue={product?.description}
                 className="form-textarea mt-1 block w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -105,7 +141,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="images" name="images" type="file" className="sr-only" />
+                        <input id="images" name="images" type="file" defaultValue={product?.images} className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
