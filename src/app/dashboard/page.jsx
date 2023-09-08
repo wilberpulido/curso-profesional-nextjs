@@ -3,8 +3,8 @@ import { Chart } from '@common/Chart';
 import useFecth from '@hooks/useFetch';
 import endPoints from '@services/api';
 
-const PRODUCT_LIMIT = 100;
-const PRODUCT_OFFSET = 120;
+const PRODUCT_LIMIT = 0;
+const PRODUCT_OFFSET = 200;
 
 export default function Dashboard() {
   const products = useFecth(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));

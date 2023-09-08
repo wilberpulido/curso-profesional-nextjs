@@ -27,7 +27,7 @@ export default function Edit({ params }) {
     getProduct();
 
     console.log(product);
-  }, []);
+  }, [params.id]);
 
   return <FormProduct product={product} />;
 }

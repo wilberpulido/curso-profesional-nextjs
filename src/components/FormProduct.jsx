@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addProduct } from '@services/api/products';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
@@ -9,6 +9,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     { id: 2, label: 'Electronics' },
     { id: 3, label: 'Furniture' },
     { id: 4, label: 'Toys' },
+    { id: 34, label: 'Animals' },
     { id: 5, label: 'Others' },
   ];
 
@@ -17,18 +18,13 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       {option.label}
     </option>
   ));
-  const [selectedOption, setSelectedOption] = useState(product?.category?.id);
-
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  // (product?.category?.id);
   // <option value="1">Clothes</option>
   // <option value="2">Electronics</option>
   // <option value="3">Furniture</option>
   // <option value="4">Toys</option>
   // <option value="5">Others</option>
   console.log(product);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -99,8 +95,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 id="category"
                 name="category"
                 autoComplete="category-name"
-                defaultValue={selectedOption}
-                onChange={handleChange}
+                value={product?.category?.id.toString()}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 {optionElements}
