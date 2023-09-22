@@ -4,10 +4,13 @@ import endPoints from '@services/api';
 import axios from 'axios';
 // import { useRouter } from 'next/navigation';
 // import { useParams } from 'next/navigation'
+import useAlert from '@hooks/useAlert';
 import React, { useEffect, useState } from 'react';
+import Alert from '@common/Alert';
 
 export default function Edit({ params }) {
   const [product, setProduct] = useState({});
+  const { alert, setAlert,toggleAlert } = useAlert();
   // const router = useRouter();
   // const paramsT = useParams();
   // useEffect(() => {
@@ -17,17 +20,20 @@ export default function Edit({ params }) {
   // TODO: No carga el producto a la primera llamada
   useEffect(() => {
     const { id } = params;
-    console.log(id);
     async function getProduct() {
       const response = await axios.get(endPoints.products.getProduct(id));
       setProduct(response.data);
     }
-    console.log('se ejecuto');
     if (typeof id === 'undefined') return;
     getProduct();
 
     console.log(product);
   }, [params.id]);
 
-  return <FormProduct product={product} />;
+  return (
+    <>
+      <Alert alert={alert} handleClose={toggleAlert} />
+      <FormProduct setAlert={setAlert} product={product} />;
+    </>
+  );
 }

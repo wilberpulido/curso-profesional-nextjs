@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { CheckIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import Modal from '@common/Modal';
 import FormProduct from '@components/FormProduct';
@@ -93,7 +94,7 @@ export default function Products() {
                             <img className="h-10 w-10 rounded-full" src={product.images[0]} alt="" />
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                            <div className="text-sm font-medium text-gray-900">{product.title}</div>
                           </div>
                         </div>
                       </td>
@@ -105,9 +106,9 @@ export default function Products() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="/" className="text-indigo-600 hover:text-indigo-900">
+                        <Link href={`/dashboard/products/edit/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
                           Edit
-                        </a>
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <XCircleIcon className="flex-shrink-0 h-6 w-6 text-gray-400 cursor-pointer" onClick={() => handleClose(product.id)} />

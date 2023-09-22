@@ -2,9 +2,10 @@
 import { Chart } from '@common/Chart';
 import useFecth from '@hooks/useFetch';
 import endPoints from '@services/api';
+import Link from 'next/link';
 
-const PRODUCT_LIMIT = 0;
-const PRODUCT_OFFSET = 200;
+const PRODUCT_LIMIT = 1000;
+const PRODUCT_OFFSET = 0;
 
 export default function Dashboard() {
   const products = useFecth(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
@@ -73,7 +74,7 @@ export default function Dashboard() {
                             <img className="h-10 w-10 rounded-full" src={product.images[0]} alt="" />
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                            <div className="text-sm font-medium text-gray-900">{product.title}</div>
                           </div>
                         </div>
                       </td>
@@ -85,9 +86,9 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="/" className="text-indigo-600 hover:text-indigo-900">
+                        <Link href={`/dashboard/products/edit/${product.id}`} className="text-indigo-600 hover:text-indigo-900">
                           Edit
-                        </a>
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="/" className="text-indigo-600 hover:text-indigo-900">

@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { addProduct } from '@services/api/products';
+import { addProduct, updateProduct } from '@services/api/products';
+import { useRouter } from 'next/navigation';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
+  const [valorSelect, setValorSelect] = useState('');
+  const router = useRouter();
 
   const options = [
     { id: 1, label: 'Clothes' },
     { id: 2, label: 'Electronics' },
-    { id: 3, label: 'Furniture' },
+    { id: 3, label: 'Ursula' },
     { id: 4, label: 'Toys' },
     { id: 34, label: 'Animals' },
     { id: 5, label: 'Others' },
@@ -18,13 +21,16 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       {option.label}
     </option>
   ));
+  useEffect(() => {
+    setValorSelect(product?.category?.id ?? '')
+  }, [product]);
   // (product?.category?.id);
   // <option value="1">Clothes</option>
   // <option value="2">Electronics</option>
   // <option value="3">Furniture</option>
   // <option value="4">Toys</option>
   // <option value="5">Others</option>
-  console.log(product);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -34,27 +40,59 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       description: formData.get('description'),
       categoryId: parseInt(formData.get('category')),
       //images: [formData.get('images').name],
-      //images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
+      images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
     };
-    addProduct(data)
-      .then(() => {
-        setAlert({
-          active: true,
-          message: 'Product added successfully',
-          type: 'success',
-          autoClose: false,
+    console.log('data por aca')
+    console.log(data)
+    if (product) {
+      updateProduct(product.id, data)
+        .then((response) => {
+          console.log('console.log(response)')
+          console.log(response)
+          router.push('/dashboard/products');
+
+          setAlert({
+            active: true,
+            message: 'Product updated successfully',
+            type: 'success',
+            autoClose: false,
+          });
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          });
         });
-        setOpen(false);
-      })
-      .catch((error) => {
-        setAlert({
-          active: true,
-          message: error.message,
-          type: 'error',
-          autoClose: false,
+    } else {
+      console.log('else')
+      addProduct(data)
+        .then(() => {
+          setAlert({
+            active: true,
+            message: 'Product added successfully',
+            type: 'success',
+            autoClose: false,
+          });
+          setOpen(false);
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          });
+          setOpen(false);
         });
-        setOpen(false);
-      });
+    }
+
+  };
+
+  const handleChange = (event) => {
+    setValorSelect(event.target.value);
   };
 
   return (
@@ -95,8 +133,9 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 id="category"
                 name="category"
                 autoComplete="category-name"
-                value={product?.category?.id.toString()}
+                value={valorSelect}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                onChange={handleChange}
               >
                 {optionElements}
               </select>
