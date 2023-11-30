@@ -10,7 +10,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
   const options = [
     { id: 1, label: 'Clothes' },
     { id: 2, label: 'Electronics' },
-    { id: 3, label: 'Ursula' },
+    { id: 3, label: 'Furniture' },
     { id: 4, label: 'Toys' },
     { id: 34, label: 'Animals' },
     { id: 5, label: 'Others' },
@@ -22,7 +22,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     </option>
   ));
   useEffect(() => {
-    setValorSelect(product?.category?.id ?? '')
+    setValorSelect(product?.category?.id ?? '');
   }, [product]);
   // (product?.category?.id);
   // <option value="1">Clothes</option>
@@ -30,7 +30,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
   // <option value="3">Furniture</option>
   // <option value="4">Toys</option>
   // <option value="5">Others</option>
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -42,13 +42,13 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       //images: [formData.get('images').name],
       images: ['https://cdn11.bigcommerce.com/s-3stx4pub31/images/stencil/1280x1280/products/452/1210/guaymallen_blanco__99774.1657131398.jpg?c=2'],
     };
-    console.log('data por aca')
-    console.log(data)
+    console.log('data por aca');
+    console.log(data);
     if (product) {
       updateProduct(product.id, data)
         .then((response) => {
-          console.log('console.log(response)')
-          console.log(response)
+          console.log('console.log(response)');
+          console.log(response);
           router.push('/dashboard/products');
 
           setAlert({
@@ -67,7 +67,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
           });
         });
     } else {
-      console.log('else')
+      console.log('else');
       addProduct(data)
         .then(() => {
           setAlert({
@@ -88,7 +88,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
           setOpen(false);
         });
     }
-
   };
 
   const handleChange = (event) => {

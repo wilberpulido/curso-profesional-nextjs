@@ -25,7 +25,7 @@ function useProviderAuth() {
         'Content-Type': 'application/json',
       },
     };
-    console.log(Cookie.get('token'))
+    console.log(Cookie.get('token'));
     const { data: data } = await axios.post(endPoints.auth.login, { email, password }, options);
     // .catch((test) => {
     //   console.log('test');
@@ -41,8 +41,16 @@ function useProviderAuth() {
     }
   };
 
+  const logout = () => {
+    Cookie.remove('token');
+    setUser(null);
+    delete axios.defaults.headers.Authorization;
+    window.location.href = '/login';
+  };
+
   return {
     user,
     signIn,
+    logout,
   };
 }
